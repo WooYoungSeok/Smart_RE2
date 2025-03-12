@@ -23,7 +23,7 @@ basename = os.path.splitext(os.path.basename(data_path))[0]  # "gsm8k_add_task"
 dataset_name = basename.split("_")[0]  # "gsm8k"
 
 # 예측할 태스크 목록
-tasks_list = ['RE2', 'sum', 'table', 'graph', 'bullet_point', 
+tasks_list = ['platinum_prompt', 'platinum_prompt_no_cot', 'RE2', 'sum', 'table', 'graph', 'bullet_point', 
               'sRE2', 'RE2_no_cot', 'sum_no_cot', 'table_no_cot', 
               'graph_no_cot', 'bullet_point_no_cot', 'sRE2_no_cot']
 
