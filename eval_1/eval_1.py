@@ -10,22 +10,10 @@ import datetime
 # 설정 및 데이터 불러오기
 # -------------------------------
 # 평가할 예측 파일 이름 (실제 파일 이름에 맞게 수정)
-predictions_file = "predictions_gpt-4o-mini_gsm8k_20250313_100244.xlsx"
+predictions_file = "predictions_gpt-4o-mini_winograd_20250313_155205.xlsx"
 
 # 예측 파일 로드
 df = pd.read_excel(predictions_file)
-
-# platinum_target 컬럼이 문자열 형태라면, 리스트(또는 array)로 변환
-def parse_target(x):
-    if isinstance(x, str):
-        try:
-            return ast.literal_eval(x)
-        except Exception as e:
-            print(f"Error parsing target: {x} - {e}")
-            return x
-    return x
-
-df['platinum_target'] = df['platinum_target'].apply(parse_target)
 
 # 평가할 태스크 목록 (예측 파일에 저장된 모든 task 예측값 열)
 tasks_list = ['platinum_prompt', 'platinum_prompt_no_cot', 'RE2', 'sum', 'table', 'graph', 'bullet_point', 
