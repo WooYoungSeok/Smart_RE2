@@ -4,14 +4,13 @@ import pandas as pd
 import aiohttp
 import asyncio
 from tqdm.asyncio import tqdm as tqdm_asyncio
-from sklearn.metrics import accuracy_score
 import datetime
 
 # -------------------------------
 # 설정 및 데이터 불러오기
 # -------------------------------
 # 평가할 예측 파일 이름 (실제 파일 이름에 맞게 수정)
-predictions_file = "predictions_async_gpt-4o-mini_drop_20250312_223527.xlsx"
+predictions_file = "predictions_gpt-4o-mini_gsm8k_20250313_100244.xlsx"
 
 # 예측 파일 로드
 df = pd.read_excel(predictions_file)
@@ -28,7 +27,7 @@ def parse_target(x):
 
 df['platinum_target'] = df['platinum_target'].apply(parse_target)
 
-# 평가할 태스크 목록
+# 평가할 태스크 목록 (예측 파일에 저장된 모든 task 예측값 열)
 tasks_list = ['platinum_prompt', 'platinum_prompt_no_cot', 'RE2', 'sum', 'table', 'graph', 'bullet_point', 
               'sRE2', 'RE2_no_cot', 'sum_no_cot', 'table_no_cot', 
               'graph_no_cot', 'bullet_point_no_cot', 'sRE2_no_cot']
@@ -39,10 +38,10 @@ tasks_list = ['platinum_prompt', 'platinum_prompt_no_cot', 'RE2', 'sum', 'table'
 async def extract_final_answer(session, response_text, retries=3, delay=1, model="gpt-4o", max_tokens=50, temperature=0):
     """
     chain-of-thought가 포함된 응답(response_text)에서 최종 정답만 추출합니다.
-    프롬프트는 "Extract the final answer from the following response: ..."와 같이 구성됩니다.
+    프롬프트는 "Extract the final answer from the following response: ..."로 구성됩니다.
     """
     url = "https://api.openai.com/v1/chat/completions"
-    # API 키는 환경 변수 또는 코드 내에 직접 지정
+    # API 키는 실제 환경에 맞게 설정하거나 환경 변수로 불러오세요.
     my_api_key = "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"
     headers = {
         "Authorization": f"Bearer {my_api_key}",
@@ -114,7 +113,9 @@ async def main():
             print(f"Completed extraction for task: {task}")
             await asyncio.sleep(1)
     
-    # 평가: 각 태스크별로 최종 정답이 platinum_target 배열에 포함되는지 확인 (case-insensitive 비교)
+    # -------------------------------
+    # 각 태스크별 정확도 계산 및 터미널 출력
+    # -------------------------------
     evaluation = {}
     for task in tasks_list:
         def check_answer(row):
@@ -128,17 +129,22 @@ async def main():
         df[task + "_correct"] = df.apply(check_answer, axis=1)
         evaluation[task] = df[task + "_correct"].mean()
     
-    eval_df = pd.DataFrame(list(evaluation.items()), columns=["Task", "Accuracy"])
+    print("Task Accuracies:")
+    for task, acc in evaluation.items():
+        print(f"{task}: {acc:.2%}")
     
-    # 평가 결과 파일 이름 구성 (모델, 데이터셋, 타임스탬프 반영)
+    # -------------------------------
+    # 최종 출력 파일 구성: platinum_prompt_no_cot, platinum_target, 각 task의 최종 예측 값
+    # -------------------------------
+    output_columns = ["platinum_prompt_no_cot", "platinum_target"] + [f"{task}_final" for task in tasks_list]
+    output_df = df[output_columns]
+    
     model_name = "gpt-4o-mini"
-    dataset_name = "gsm8k"  # 예측 파일 이름에서 추출한 데이터셋 이름
+    dataset_name = predictions_file.split('_')[2]
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    evaluation_file = f"evaluation_metrics_extracted_{model_name}_{dataset_name}_{timestamp}.xlsx"
-    eval_df.to_excel(evaluation_file, index=False)
-    
-    print("Evaluation completed.")
-    print(eval_df)
+    output_file = f"evaluation_extracted_{model_name}_{dataset_name}_{timestamp}.xlsx"
+    output_df.to_excel(output_file, index=False)
+    print("Evaluation extracted file saved as:", output_file)
 
 if __name__ == "__main__":
     asyncio.run(main())

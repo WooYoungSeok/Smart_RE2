@@ -13,7 +13,7 @@ CONCURRENCY_COUNT = 20
 my_api_key = "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"
 
 # 데이터 불러오기 (parquet 파일 예시)
-data_path = "sRE2_datasets/drop_add_task.parquet"
+data_path = "sRE2_datasets/winograd_wsc_add_task.parquet"
 df = pd.read_parquet(data_path)
 # 'cleaning_status'가 "rejected"인 행 제거
 df = df[df["cleaning_status"] != "rejected"].reset_index(drop=True)
@@ -30,10 +30,10 @@ tasks_list = ['platinum_prompt', 'platinum_prompt_no_cot', 'RE2', 'sum', 'table'
 # 모델 이름과 타임스탬프 설정 (파일명에 반영)
 model_name = "gpt-4o-mini"
 timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-predictions_file = f"predictions_async_{model_name}_{dataset_name}_{timestamp}.xlsx"
+predictions_file = f"predictions_{model_name}_{dataset_name}_{timestamp}.xlsx"
 
 async def fetch_prediction(semaphore, session, prompt, task, idx, 
-                           model=model_name, max_tokens=100, temperature=0, 
+                           model=model_name, max_tokens=2054, temperature=0, 
                            retries=3, delay=1):
     """
     비동기 API 호출 함수.
