@@ -13,7 +13,7 @@ CONCURRENCY_COUNT = 20
 my_api_key = "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"
 
 # 데이터 불러오기 (parquet 파일 예시)
-data_path = "sRE2_datasets/winograd_wsc_add_task.parquet"
+data_path = "sRE2_datasets/singleq_add_task.parquet"
 df = pd.read_parquet(data_path)
 # 'cleaning_status'가 "rejected"인 행 제거
 df = df[df["cleaning_status"] != "rejected"].reset_index(drop=True)
