@@ -6,6 +6,7 @@ import time
 import datetime
 import os
 
+# 실행 코드: python 4o-mini_inference.py
 # 비동기 동시 요청 개수를 설정 (원하는 값으로 조정)
 CONCURRENCY_COUNT = 20
 
@@ -13,7 +14,7 @@ CONCURRENCY_COUNT = 20
 my_api_key = "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"
 
 # 데이터 불러오기 (parquet 파일 예시)
-data_path = "sRE2_datasets/singleq_add_task.parquet"
+data_path = "sRE2_adaptive_datasets\winograd_wsc_m.parquet"
 df = pd.read_parquet(data_path)
 # 'cleaning_status'가 "rejected"인 행 제거
 df = df[df["cleaning_status"] != "rejected"].reset_index(drop=True)
@@ -23,9 +24,9 @@ basename = os.path.splitext(os.path.basename(data_path))[0]  # "gsm8k_add_task"
 dataset_name = basename.split("_")[0]  # "gsm8k"
 
 # 예측할 태스크 목록
-tasks_list = ['platinum_prompt', 'platinum_prompt_no_cot', 'RE2', 'sum', 'table', 'graph', 'bullet_point', 
-              'sRE2', 'RE2_no_cot', 'sum_no_cot', 'table_no_cot', 
-              'graph_no_cot', 'bullet_point_no_cot', 'sRE2_no_cot']
+tasks_list = ['platinum_prompt', 'platinum_prompt_no_cot',
+              'RE2', 'sRE2', 'RE2_no_cot', 'sRE2_no_cot',
+              'sRE2_m1', 'sRE2_m2', 'sRE2_m1_no_cot', 'sRE2_m2_no_cot'] # 'sum', 'table', 'graph', 'bullet_point', 'sum_no_cot', 'table_no_cot', 'graph_no_cot', 'bullet_point_no_cot', 
 
 # 모델 이름과 타임스탬프 설정 (파일명에 반영)
 model_name = "gpt-4o-mini"
