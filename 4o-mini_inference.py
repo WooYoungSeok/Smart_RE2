@@ -11,7 +11,7 @@ import os
 CONCURRENCY_COUNT = 20
 
 # API 키 설정
-my_api_key = "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"
+my_api_key = ""
 
 # 데이터 불러오기 (parquet 파일 예시)
 data_path = "sRE2_adaptive_datasets\winograd_wsc_m.parquet"
