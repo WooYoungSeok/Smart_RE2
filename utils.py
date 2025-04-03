@@ -7,8 +7,14 @@ from tqdm import tqdm
 
 def get_parse_fn(parsing_strategy):
     def parse_fn_math(output):
-        """Used for singleop, singleeq, multiarith, gsm8k, and svamp"""
-        return re.sub(r"\.0+$", "", (re.search(r'-?[0-9.]*[0-9]', output.replace('*','').replace('#','').lower().split('answer: ')[-1].replace(',', '')).group()))
+        cleaned = output.replace('*', '').replace('#', '').lower().split('answer: ')[-1].replace(',', '')
+        match = re.search(r'-?[0-9.]*[0-9]', cleaned)
+        if match:
+            result = match.group()
+            return re.sub(r"\.0+$", "", result)
+        else:
+            # 예상한 패턴이 없을 때 빈 문자열이나 적절한 기본값 반환
+            return ""
 
     def parse_fn_multiple_choice(output):
         """Used for mmlu math and winograd schema challenge"""

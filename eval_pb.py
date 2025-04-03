@@ -9,7 +9,7 @@ import re
 # -------------------------------
 # 설정 및 데이터 불러오기
 # -------------------------------
-predictions_file = "predictions_gpt-4o-mini_winograd_20250402_171325.xlsx"  # 예측 파일 경로
+predictions_file = "predictions_gpt-4o-mini_svamp_20250402_165105.xlsx"  # 예측 파일 경로
 df = pd.read_excel(predictions_file)
 # 실행 코드: python eval_pb.py
 
