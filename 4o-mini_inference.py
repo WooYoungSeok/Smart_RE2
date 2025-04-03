@@ -11,7 +11,7 @@ import os
 CONCURRENCY_COUNT = 20
 
 # API 키 설정
-my_api_key = "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"
+my_api_key = ""
 
 # 데이터 불러오기 (parquet 파일 예시)
 data_path = "sRE2_adaptive_datasets\winograd_wsc_m.parquet"
@@ -25,8 +25,7 @@ dataset_name = basename.split("_")[0]  # "gsm8k"
 
 # 예측할 태스크 목록
 tasks_list = ['platinum_prompt', 'platinum_prompt_no_cot',
-              'RE2', 'sRE2', 'RE2_no_cot', 'sRE2_no_cot',
-              'sRE2_m1', 'sRE2_m2', 'sRE2_m1_no_cot', 'sRE2_m2_no_cot'] # 'sum', 'table', 'graph', 'bullet_point', 'sum_no_cot', 'table_no_cot', 'graph_no_cot', 'bullet_point_no_cot', 
+              'RE2', 'sRE2', 'RE2_no_cot', 'sRE2_no_cot'] # 'sum', 'table', 'graph', 'bullet_point', 'sum_no_cot', 'table_no_cot', 'graph_no_cot', 'bullet_point_no_cot', 'sRE2_m1', 'sRE2_m2', 'sRE2_m1_no_cot', 'sRE2_m2_no_cot'
 
 # 모델 이름과 타임스탬프 설정 (파일명에 반영)
 model_name = "gpt-4o-mini"

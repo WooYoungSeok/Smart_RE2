@@ -22,9 +22,8 @@ df["platinum_target"] = df["platinum_target"].apply(lambda x: parse_platinum_tar
 
 # 평가할 태스크 목록 (예측 파일에 f'{task}_pred' 열이 존재해야 함)
 tasks_list = ['platinum_prompt', 'platinum_prompt_no_cot',
-              'RE2', 'sRE2', 'RE2_no_cot', 'sRE2_no_cot',
-              'sRE2_m1', 'sRE2_m2', 'sRE2_m1_no_cot', 'sRE2_m2_no_cot'] # 'sum', 'table', 'graph', 'bullet_point', 'sum_no_cot', 'table_no_cot', 'graph_no_cot', 'bullet_point_no_cot', 
-              
+              'RE2', 'sRE2', 'RE2_no_cot', 'sRE2_no_cot'] # 'sum', 'table', 'graph', 'bullet_point', 'sum_no_cot', 'table_no_cot', 'graph_no_cot', 'bullet_point_no_cot', 'sRE2_m1', 'sRE2_m2', 'sRE2_m1_no_cot', 'sRE2_m2_no_cot'
+               
 
 # -------------------------------
 # 데이터셋에 따른 파싱 전략 선택
