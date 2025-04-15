@@ -32,8 +32,12 @@ def get_parse_fn(parsing_strategy):
     def parse_bbh_multiple_choice(output):
         """Used for BBH multiple choice questions, where the answer is in the form (A)""" 
         result = output.replace('*', '').replace('#', '').lower().split('answer: ')[-1].replace('.', '').replace('\'', '').replace('\"', '').strip().lower()
-        result = re.search(r'\([a-z]\)', result).group(0)
-        return result
+        match = re.search(r'\([a-z]\)', result)
+        if match:
+            return match.group(0)
+        else:
+            # 예상한 패턴이 없을 때 빈 문자열 반환
+            return ""
 
     def parse_fn_text(output):
         """Used by DROP and hotpotqa, where the answer is a string"""
